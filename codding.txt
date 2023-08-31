@@ -1,0 +1,149 @@
+//item.h//
+#ifndef ITEM_H
+#define ITEM_H
+
+#include<string>
+#include<iostream>
+using namespace std;
+
+class Item
+{
+public:
+	string item_id;
+	string item_name;
+	double item_price;
+	string item_ingredients;
+	string type_name;
+
+	Item();
+	~Item();
+
+};
+#endif
+
+//manageitem.cpp
+#include <string>
+#include <iostream>
+using namespace std;
+
+#include <mysql/jdbc.h>
+using namespace sql;
+
+#include "DatabaseConnection.h"
+#include "item.h"
+#include "manageItem.h"
+
+int ManageItem::AddItem(Item* item)
+{
+	DatabaseConnection dbConn;
+	PreparedStatement* ps = dbConn.prepareStatement("INSERT INTO ITEM VALUES (?,?,?,?,?)");
+
+	ps->setString(1, item->item_id);
+	ps->setString(2, item->item_name);
+	ps->setDouble(3, item->item_price);
+	ps->setString(4, item->item_ingredients);
+	ps->setString(5, item->type_name);
+
+	int status = ps->executeUpdate();
+	
+	delete ps;
+
+	return status;
+}
+
+//manageitem.h
+#ifndef MANAGEITEM_H
+#define MANAGEITEM_H
+
+#include "item.h"
+#include<iostream>
+using namespace std;
+
+class ManageItem
+{
+public:
+	ManageItem();
+	int AddItem(Item* item);
+	void ViewItem();
+	void DeleteItem(string item_id);
+};
+
+#endif
+
+//order_product.h
+#ifndef ORDER_PRODUCT_H
+#define ORDER_PRODUCT_H
+
+#include <string>
+#include<iostream>
+using namespace std;
+
+class Order_product
+{
+public:
+	string order_id;
+	string customer_id;
+	int item_quantity;
+	string customer_remark;
+
+	Order_product();
+
+};
+#endif
+
+//order.h
+#ifndef ORDER_H
+#define ORDER_H
+
+#include<string>
+#include<iostream>
+using namespace std;
+
+class Orders
+{
+	string order_id;
+	string customer_id;
+	char order_status;
+	int order_rating;
+	double order_totalprice;
+	string order_date;
+	char payment_status;
+
+	Orders();
+	void AddNew();
+	void ViewOrder();
+	void EditOrder();
+	void DeleteOrder();
+	void ViewCompleted();
+	void AvgRating();
+	void MonthlySales();
+};
+#endif
+
+//customer.h
+#ifndef CUSTOMER_H
+#define CUSTOMER_H
+
+#include<string>
+#include<iostream>
+using namespace std;
+
+class Customer
+{
+public:
+	string customer_id;
+	string customer_name;
+	string customer_contacts;
+	string customer_address;
+
+	Customer();
+	void AddCustomer();
+	void ViewCustomer();
+	void EditCustomer();
+};
+#endif
+
+
+
+
+
